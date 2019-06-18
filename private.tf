@@ -109,8 +109,8 @@ resource "aws_route" "default" {
       aws_route_table.private.*.tags.AZ,
       var.availability_zones,
     ),
-  )[element(keys(var.az_ngw_ids), count.index)]
-  nat_gateway_id         = var.az_ngw_ids[element(keys(var.az_ngw_ids), count.index)]
+  )[element(var.availability_zones, count.index)]
+  nat_gateway_id         = element(aws_nat_gateway.public.*.id, count.index)
   destination_cidr_block = "0.0.0.0/0"
   depends_on             = [aws_route_table.private]
 }
